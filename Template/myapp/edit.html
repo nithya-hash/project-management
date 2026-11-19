@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project</title>
+    <link rel="stylesheet" href="{% static 'myapp/styles.css' %}">
+</head>
+<body>
+    <div class="container form-container">
+        <h1>Edit Project #{{ study.study_id }}</h1>
+
+        <form method="post" action="{% url 'save' study.study_id %}" class="study-form">
+            {% csrf_token %}
+
+            <label for="sname">Project name</label>
+            <input type="text" id="sname" name="sname" maxlength="100" value="{{ study.name }}" required>
+
+            <label for="sdesc">Description</label>
+            <textarea id="sdesc" name="sdesc" rows="3">{{ study.description|default:"" }}</textarea>
+
+            <label for="sphase">Phase</label>
+            <select id="sphase" name="sphase" required>
+                <option value="Planning"    {% if study.phase == 'Planning' %}selected{% endif %}>Planning</option>
+                <option value="Development" {% if study.phase == 'Development' %}selected{% endif %}>Development</option>
+                <option value="Testing"     {% if study.phase == 'Testing' %}selected{% endif %}>Testing</option>
+                <option value="Deployment"  {% if study.phase == 'Deployment' %}selected{% endif %}>Deployment</option>
+            </select>
+
+            <label for="spon">Sponsor name</label>
+            <input type="text" id="spon" name="spon" maxlength="100" value="{{ study.sponsor_name }}" required>
+
+            <label for="sstatus">Status</label>
+            <select id="sstatus" name="sstatus">
+                <option value="Planned"   {% if study.status == 'Planned' %}selected{% endif %}>Planned</option>
+                <option value="Ongoing"   {% if study.status == 'Ongoing' %}selected{% endif %}>Ongoing</option>
+                <option value="Completed" {% if study.status == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>
+
+            <label for="sstart">Start date</label>
+            <input type="date" id="sstart" name="sstart" value="{{ study.start_date|date:'Y-m-d' }}">
+
+            <label for="send">End date</label>
+            <input type="date" id="send" name="send" value="{{ study.end_date|date:'Y-m-d' }}">
+
+            <div class="buttons">
+                <button type="submit" class="btn">Update Project</button>
+                <a href="{% url 'home' %}" class="btn btn-grey">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

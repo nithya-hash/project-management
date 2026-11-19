@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management</title>
+    <link rel="stylesheet" href="{% static 'myapp/styles.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Project Management</h1>
+
+        <div class="toolbar">
+            <form method="get" class="filters">
+                <input type="text" name="q" value="{{ q }}" placeholder="Search name, description or sponsor">
+                <select name="phase">
+                    <option value="">All phases</option>
+                    {% for value, label in phases %}
+                        <option value="{{ value }}" {% if value == selected_phase %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <select name="status">
+                    <option value="">All statuses</option>
+                    {% for s in statuses %}
+                        <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn">Search</button>
+                <a href="{% url 'home' %}" class="btn btn-grey">Reset</a>
+            </form>
+            <div class="top-actions">
+                <a href="{% url 'add' %}" class="btn">+ Add Project</a>
+                <a href="{% url 'logout' %}" class="btn btn-grey">Logout</a>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project id</th>
+                        <th>Project Name</th>
+                        <th>Project Description</th>
+                        <th>Phase</th>
+                        <th>Sponsor name</th>
+                        <th>Status</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stud in study %}
+                    <tr>
+                        <td>{{ stud.study_id }}</td>
+                        <td>{{ stud.name }}</td>
+                        <td>{{ stud.description|default:"-" }}</td>
+                        <td><span class="badge phase">{{ stud.get_phase_display }}</span></td>
+                        <td>{{ stud.sponsor_name }}</td>
+                        <td><span class="badge {{ stud.status|lower }}">{{ stud.status }}</span></td>
+                        <td>{{ stud.start_date|date:"d M Y"|default:"-" }}</td>
+                        <td>{{ stud.end_date|date:"d M Y"|default:"-" }}</td>
+                        <td>
+                            <a href="{% url 'detail' stud.study_id %}" class="action-btn view">View</a>
+                            <a href="{% url 'edit' stud.study_id %}" class="action-btn edit">Edit</a>
+                            <a href="{% url 'delete' stud.study_id %}" class="action-btn delete">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9">No projects found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Project</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 16px;
+        }
+        th { width: 35%; color: #555; font-weight: 600; }
+        td { color: #333; }
+        .buttons { display: flex; justify-content: space-between; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1976d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover { background-color: #125ea4; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>View Project</h1>
+        <table>
+            <tr>
+                <th>Project Name:</th>
+                <td>{{ study.name }}</td>
+            </tr>
+            <tr>
+                <th>Project Description:</th>
+                <td>{{ study.description|default:"-" }}</td>
+            </tr>
+            <tr>
+                <th>Phase:</th>
+                <td>{{ study.get_phase_display }}</td>
+            </tr>
+            <tr>
+                <th>Sponsor Name:</th>
+                <td>{{ study.sponsor_name }}</td>
+            </tr>
+            <tr>
+                <th>Status:</th>
+                <td>{{ study.status }}</td>
+            </tr>
+            <tr>
+                <th>Start Date:</th>
+                <td>{{ study.start_date|date:"d M Y"|default:"-" }}</td>
+            </tr>
+            <tr>
+                <th>End Date:</th>
+                <td>{{ study.end_date|date:"d M Y"|default:"-" }}</td>
+            </tr>
+        </table>
+        <div class="buttons">
+            <a href="{% url 'edit' study.study_id %}" class="btn">Edit</a>
+            <a href="{% url 'home' %}" class="btn">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
